@@ -1,6 +1,6 @@
 {
   "name": "node-semaphoreci",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Javascript wrapper for the Semaphore CI API",
   "main": "lib/index.js",
   "scripts": {
