@@ -3,9 +3,9 @@ import path from 'path'
 import qs from 'querystring'
 
 export default class SemaphoreAPI {
-  constructor({api_url = 'http://semaphoreci.com/api/v1', api_hash, auth_token}){
+  constructor({api_url = 'http://semaphoreci.com/api/v1', project_hash, auth_token}){
     this.api_url = api_url;
-    this.api_hash = api_hash;
+    this.project_hash = project_hash;
     this.auth_token = auth_token;
   }
 
@@ -21,37 +21,37 @@ export default class SemaphoreAPI {
     https://semaphoreci.com/docs/branches-and-builds-api.html
   */
   getBranches() {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/branches`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/branches`));
   }
 
   getBranchStatus({branch_id, branch_name}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/status`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/status`));
   }
 
   getBranchHistory({branch_id, branch_name, page = 1}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}`, {page: page}));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}`, {page}));
   }
 
   getBuildInfo({branch_id, branch_name, build_number}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/builds/${build_number}`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/builds/${build_number}`));
   }
 
   getBuildLog({branch_id, branch_name, build_number}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/builds/${build_number}/log`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/builds/${build_number}/log`));
   }
 
   rebuildLastRevision({branch_id, branch_name}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.post(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/build`));
+    return axios.post(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/build`));
   }
 
   launchBuild(branch_info) {
@@ -61,11 +61,11 @@ export default class SemaphoreAPI {
   stopBuild({branch_id, branch_name, build_number}) {
     let branch_selector = branch_id || branch_name;
 
-    return axios.post(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/builds/${build_number}/stop`));
+    return axios.post(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/builds/${build_number}/stop`));
   }
 
   runDeployFromBuild({branch_id, branch_name, build_number, server_id}) {
-    return axios.post(this._buildRequest(`/projects/${this.api_hash}/${branch_selector}/builds/${build_number}/deploy/${server_id}`));
+    return axios.post(this._buildRequest(`/projects/${this.project_hash}/${branch_selector}/builds/${build_number}/deploy/${server_id}`));
   }
 
   /* 
@@ -73,27 +73,27 @@ export default class SemaphoreAPI {
     https://semaphoreci.com/docs/servers-and-deploys-api.html
   */
   getServers() {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers`));
   }
 
   getServerStatus({server_id}) {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers/${server_id}/status`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers/${server_id}/status`));
   }
 
   getServerHistory({server_id}) {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers/${server_id}`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers/${server_id}`));
   }
 
   getDeployInformation({server_id, deploy_number}) {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers/${server_id}/deploys/${deploy_number}`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers/${server_id}/deploys/${deploy_number}`));
   }
 
   getDeployLog({server_id, deploy_number}) {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers/${server_id}/deploys/${deploy_number}/log`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers/${server_id}/deploys/${deploy_number}/log`));
   }
 
   stopDeploy({server_id, deploy_number}) {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/servers/${server_id}/deploys/${deploy_number}/stop`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/servers/${server_id}/deploys/${deploy_number}/stop`));
   }
 
   /* 
@@ -101,18 +101,18 @@ export default class SemaphoreAPI {
     https://semaphoreci.com/docs/webhooks-api.html
   */
   getWebhooks() {
-    return axios.get(this._buildRequest(`/projects/${this.api_hash}/hooks`));
+    return axios.get(this._buildRequest(`/projects/${this.project_hash}/hooks`));
   }
 
   createWebhook({url, hook_type}) {
-    return axios.post(this._buildRequest(`/projects/${this.api_hash}/hooks`), {url, hook_type});
+    return axios.post(this._buildRequest(`/projects/${this.project_hash}/hooks`), {url, hook_type});
   }
 
   updateWebhook({webhook_id, url, hook_type}) {
-    return axios.put(this._buildRequest(`/projects/${this.api_hash}/hooks/${webhook_id}`), {url, hook_type});
+    return axios.put(this._buildRequest(`/projects/${this.project_hash}/hooks/${webhook_id}`), {url, hook_type});
   }
 
   deleteWebhook({webhook_id}) {
-    return axios.delete(this._buildRequest(`/projects/${this.api_hash}/hooks/${webhook_id}`));
+    return axios.delete(this._buildRequest(`/projects/${this.project_hash}/hooks/${webhook_id}`));
   }
 }

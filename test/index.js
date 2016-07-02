@@ -3,7 +3,7 @@ import SemaphoreAPI from '../lib'
 
 const api = new SemaphoreAPI({
   api_url: 'http://semaphoreci.test/api/v1',
-  api_hash: 'some_hash',
+  project_hash: 'some_hash',
   auth_token: 'some_token'
 })
 
